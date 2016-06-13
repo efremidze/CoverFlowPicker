@@ -36,14 +36,13 @@ public class CoverFlowPickerCollectionViewLayout: UICollectionViewFlowLayout {
     override public func prepareLayout() {
         guard let collectionView = collectionView else { return super.prepareLayout() }
         
+        let center = collectionView.contentOffsetCenter
         var frame = collectionView.bounds
         var origin = minimumInteritemSpacing
         
         let count = collectionView.numberOfItemsInSection(0)
         cache = (0..<count).map { NSIndexPath(forItem: $0, inSection: 0) }.map { indexPath in
-            let size = (currentIndex() == indexPath.item) ? large : small
-            defer { origin += size + minimumInteritemSpacing }
-            
+            var size = small
             switch scrollDirection {
             case .Vertical:
                 frame.origin.y = origin
@@ -56,6 +55,21 @@ public class CoverFlowPickerCollectionViewLayout: UICollectionViewFlowLayout {
             let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
             attributes.zIndex = indexPath.item
             attributes.frame = frame
+            
+            let distance = attributes.center.distance(center)
+            let delta = 1 - (distance / large)
+            size = max(small, min(large * delta, large))
+            
+            switch scrollDirection {
+            case .Vertical:
+                frame.size.height = size
+            case .Horizontal:
+                frame.size.width = size
+            }
+            attributes.frame = frame
+            
+            defer { origin += size + minimumInteritemSpacing }
+            
             return attributes
         }
     }
