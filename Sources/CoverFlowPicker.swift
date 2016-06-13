@@ -37,12 +37,12 @@ public class CoverFlowPickerCollectionViewLayout: UICollectionViewFlowLayout {
         guard let collectionView = collectionView else { return super.prepareLayout() }
         
         var frame = collectionView.bounds
-        var origin: CGFloat = 0
+        var origin = minimumInteritemSpacing
         
         let count = collectionView.numberOfItemsInSection(0)
         cache = (0..<count).map { NSIndexPath(forItem: $0, inSection: 0) }.map { indexPath in
             let size = (currentIndex() == indexPath.item) ? large : small
-            defer { origin += size }
+            defer { origin += size + minimumInteritemSpacing }
             
             switch scrollDirection {
             case .Vertical:
@@ -72,28 +72,35 @@ public class CoverFlowPickerCollectionViewLayout: UICollectionViewFlowLayout {
         return true
     }
     
-    override public func targetContentOffsetForProposedContentOffset(proposedContentOffset: CGPoint) -> CGPoint {
-        return proposedContentOffset
+    override public func targetContentOffsetForProposedContentOffset(proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+        guard let collectionView = collectionView else { return proposedContentOffset }
+        
+        var offset = proposedContentOffset
+        switch scrollDirection {
+        case .Vertical:
+            offset.y = (layoutAttributesForItemAtCenter()?.center.y ?? 0) - (collectionView.bounds.height / 2)
+        case .Horizontal:
+            offset.x = (layoutAttributesForItemAtCenter()?.center.x ?? 0) - (collectionView.bounds.width / 2)
+        }
+        return offset
     }
     
     override public func collectionViewContentSize() -> CGSize {
         guard let collectionView = collectionView else { return super.collectionViewContentSize() }
         
-        let count = collectionView.numberOfItemsInSection(0)
-        
         var size = collectionView.frame.size
         switch scrollDirection {
         case .Vertical:
-            size.height = ((CGFloat(count) - 1) * small) + large
+            size.height = (cache.last?.frame.maxY ?? 0) + minimumInteritemSpacing
         case .Horizontal:
-            size.width = ((CGFloat(count) - 1) * small) + large
+            size.width = (cache.last?.frame.maxX ?? 0) + minimumInteritemSpacing
         }
         return size
     }
     
 }
 
-extension UICollectionViewLayout {
+private extension CoverFlowPickerCollectionViewLayout {
     
     func currentIndex() -> Int {
         return layoutAttributesForItemAtCenter()?.indexPath.item ?? 0
@@ -101,10 +108,8 @@ extension UICollectionViewLayout {
     
     func layoutAttributesForItemAtCenter() -> UICollectionViewLayoutAttributes? {
         guard let collectionView = collectionView else { return nil }
-        let layoutAttributes = layoutAttributesForElementsInRect(collectionView.bounds)
         let center = collectionView.contentOffsetCenter
-        let closest = layoutAttributes?.sort { $0.center.distance(center) < $1.center.distance(center) }.first
-        return closest
+        return cache.sort { $0.center.distance(center) < $1.center.distance(center) }.first
     }
     
 }

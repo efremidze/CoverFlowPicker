@@ -15,21 +15,18 @@ class ViewController: UIViewController {
         didSet {
             collectionView.registerClass(Cell.self, forCellWithReuseIdentifier: "cell")
             collectionView.backgroundColor = .clearColor()
+//            collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         }
     }
     @IBOutlet weak var collectionViewLayout: CoverFlowPickerCollectionViewLayout!
     
-//    let titles: [String] = (0x1F601...0x1F64F).map { String(UnicodeScalar($0)) }
-//    let images: [UIImage] = (0x1F601...0x1F64F).map { UnicodeScalar($0).debugDescription }.map { $0.substringFromIndex($0.startIndex.advancedBy(7)) }.map { $0.substringToIndex($0.endIndex.advancedBy(-2)) }.map { "https://twemoji.maxcdn.com/36x36/\($0).png" }.map { UIImage(data: NSData(contentsOfURL: NSURL(string: $0)!)!)! }
-    
-    let images: [UIImage] = []
+    let images: [UIImage] = ["1f63a", "1f63b", "1f63c", "1f63d", "1f63e", "1f63f"].map { "https://twemoji.maxcdn.com/72x72/\($0).png" }.map { UIImage(data: NSData(contentsOfURL: NSURL(string: $0)!)!)! }
     
 }
 
 extension ViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        (0x1F601...0x1F64F).map { UnicodeScalar($0).debugDescription }.map { $0.substringFromIndex($0.startIndex.advancedBy(7)) }.map { $0.substringToIndex($0.endIndex.advancedBy(-2)) }.map { "https://twemoji.maxcdn.com/36x36/\($0).png" }.forEach { print($0) }
         return images.count
     }
     
