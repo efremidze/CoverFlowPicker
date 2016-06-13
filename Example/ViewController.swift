@@ -15,19 +15,17 @@ class ViewController: UIViewController {
         didSet {
             collectionView.registerClass(Cell.self, forCellWithReuseIdentifier: "cell")
             collectionView.backgroundColor = .clearColor()
-//            collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         }
     }
-    @IBOutlet weak var collectionViewLayout: CoverFlowPickerCollectionViewLayout!
     
-    let images: [UIImage] = ["1f63a", "1f63b", "1f63c", "1f63d", "1f63e", "1f63f"].map { "https://twemoji.maxcdn.com/72x72/\($0).png" }.map { UIImage(data: NSData(contentsOfURL: NSURL(string: $0)!)!)! }
+    let urls: [NSURL] = ["1f63a", "1f63b", "1f63c", "1f63d", "1f63e", "1f63f", "1f63a", "1f63b", "1f63c", "1f63d", "1f63e", "1f63f", "1f63a", "1f63b", "1f63c", "1f63d", "1f63e", "1f63f"].map { "https://twemoji.maxcdn.com/72x72/\($0).png" }.flatMap { NSURL(string: $0) }
     
 }
 
 extension ViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+        return urls.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -39,11 +37,19 @@ extension ViewController: UICollectionViewDataSource {
 extension ViewController: UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        (cell as? Cell)?.imageView.image = images[indexPath.item]
+        (cell as? Cell)?.imageView.image = NSData(contentsOfURL: urls[indexPath.item]).flatMap { UIImage(data: $0) }
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
+    }
+    
+}
+
+extension ViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        collectionView.scaleVisibleCells()
     }
     
 }
