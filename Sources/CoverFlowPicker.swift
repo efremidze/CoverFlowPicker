@@ -30,6 +30,26 @@ public extension UICollectionView {
     
 }
 
+extension UICollectionViewFlowLayout {
+    
+    override public func targetContentOffsetForProposedContentOffset(proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+        guard let collectionView = collectionView else { return proposedContentOffset }
+        
+        let center = collectionView.contentOffsetCenter
+        let attributes = layoutAttributesForElementsInRect(collectionView.bounds)?.sort { $0.center.distance(center) < $1.center.distance(center) }.first
+        
+        var offset = proposedContentOffset
+        switch scrollDirection {
+        case .Vertical:
+            offset.y = (attributes?.center.y ?? 0) - (collectionView.bounds.height / 2)
+        case .Horizontal:
+            offset.x = (attributes?.center.x ?? 0) - (collectionView.bounds.width / 2)
+        }
+        return offset
+    }
+    
+}
+
 private extension UIScrollView {
     
     var contentOffsetCenter: CGPoint {
