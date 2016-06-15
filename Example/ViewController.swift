@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
-            collectionView.registerClass(Cell.self, forCellWithReuseIdentifier: "cell")
+            collectionView.registerClass(Cell.self, forCellWithReuseIdentifier: String(Cell))
             collectionView.backgroundColor = .clearColor()
         }
     }
@@ -29,7 +29,7 @@ extension ViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath)
+        return collectionView.dequeueReusableCellWithReuseIdentifier(String(Cell), forIndexPath: indexPath)
     }
     
 }
