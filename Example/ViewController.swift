@@ -18,27 +18,30 @@ class ViewController: UIViewController {
         }
     }
     
-    let urls: [NSURL] = ["1f63a", "1f63b", "1f63c", "1f63d", "1f63e", "1f63f", "1f63a", "1f63b", "1f63c", "1f63d", "1f63e", "1f63f", "1f63a", "1f63b", "1f63c", "1f63d", "1f63e", "1f63f"].map { "https://twemoji.maxcdn.com/72x72/\($0).png" }.flatMap { NSURL(string: $0) }
+//    let emoji: [String] = [😺, 😸, 😹, 😻, 😼, 😽, 🙀, 😿, 😾]
+    let emoji: [String] = (0x1F601...0x1F64F).map { String(UnicodeScalar($0)) }
     
 }
 
 extension ViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return urls.count
+        return emoji.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCellWithReuseIdentifier(String(Cell), forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(String(Cell), forIndexPath: indexPath)
+        cell.backgroundColor = .clearColor()
+        let layer = cell.layer as! CATextLayer
+        layer.string = emoji[indexPath.item]
+        layer.fontSize = 50
+        layer.alignmentMode = kCAAlignmentCenter
+        return cell
     }
     
 }
 
 extension ViewController: UICollectionViewDelegate {
-    
-    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        (cell as? Cell)?.imageView.image = NSData(contentsOfURL: urls[indexPath.item]).flatMap { UIImage(data: $0) }
-    }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
@@ -56,13 +59,8 @@ extension ViewController: UIScrollViewDelegate {
 
 class Cell: UICollectionViewCell {
     
-    lazy var imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.frame = self.contentView.bounds
-        imageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        imageView.contentMode = .ScaleAspectFit
-        self.contentView.addSubview(imageView)
-        return imageView
-    }()
+    override class func layerClass() -> AnyClass {
+        return CATextLayer.self
+    }
     
 }
