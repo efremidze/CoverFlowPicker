@@ -13,6 +13,9 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
+            let layout = CarouselFlowLayout()
+            layout.scrollDirection = .Horizontal
+            collectionView.collectionViewLayout = layout
             collectionView.registerClass(Cell.self, forCellWithReuseIdentifier: String(Cell))
             collectionView.backgroundColor = .clearColor()
         }
@@ -45,14 +48,6 @@ extension ViewController: UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
-    }
-    
-}
-
-extension ViewController: UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        collectionView.scaleVisibleCells()
     }
     
 }
