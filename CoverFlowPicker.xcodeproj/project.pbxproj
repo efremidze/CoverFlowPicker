@@ -14,12 +14,12 @@
 		8B25811C1D0B7350001BB9F7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B25811A1D0B7350001BB9F7 /* LaunchScreen.storyboard */; };
 		8B2581221D0B738B001BB9F7 /* CoverFlowPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2581211D0B738B001BB9F7 /* CoverFlowPicker.swift */; };
 		8B42AE481D0B7261008D7A29 /* CoverFlowPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B42AE471D0B7261008D7A29 /* CoverFlowPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BFB45DB1D0E8146000F5A61 /* CoverFlowPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B42AE441D0B7260008D7A29 /* CoverFlowPicker.framework */; };
-		8BFB45DC1D0E8146000F5A61 /* CoverFlowPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8B42AE441D0B7260008D7A29 /* CoverFlowPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8BB1D4B01E6509D900FD375E /* CoverFlowPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B42AE441D0B7260008D7A29 /* CoverFlowPicker.framework */; };
+		8BB1D4B11E6509D900FD375E /* CoverFlowPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8B42AE441D0B7260008D7A29 /* CoverFlowPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8BFB45DD1D0E8146000F5A61 /* PBXContainerItemProxy */ = {
+		8BB1D4B21E6509D900FD375E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B42AE3B1D0B7260008D7A29 /* Project object */;
 			proxyType = 1;
@@ -29,13 +29,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		8BFB45DF1D0E8146000F5A61 /* Embed Frameworks */ = {
+		8BB1D4B41E6509D900FD375E /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8BFB45DC1D0E8146000F5A61 /* CoverFlowPicker.framework in Embed Frameworks */,
+				8BB1D4B11E6509D900FD375E /* CoverFlowPicker.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -61,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BFB45DB1D0E8146000F5A61 /* CoverFlowPicker.framework in Frameworks */,
+				8BB1D4B01E6509D900FD375E /* CoverFlowPicker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,12 +138,12 @@
 				8B25810B1D0B7350001BB9F7 /* Sources */,
 				8B25810C1D0B7350001BB9F7 /* Frameworks */,
 				8B25810D1D0B7350001BB9F7 /* Resources */,
-				8BFB45DF1D0E8146000F5A61 /* Embed Frameworks */,
+				8BB1D4B41E6509D900FD375E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				8BFB45DE1D0E8146000F5A61 /* PBXTargetDependency */,
+				8BB1D4B31E6509D900FD375E /* PBXTargetDependency */,
 			);
 			name = Example;
 			productName = Example;
@@ -180,9 +180,11 @@
 				TargetAttributes = {
 					8B25810E1D0B7350001BB9F7 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0820;
 					};
 					8B42AE431D0B7260008D7A29 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -246,10 +248,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		8BFB45DE1D0E8146000F5A61 /* PBXTargetDependency */ = {
+		8BB1D4B31E6509D900FD375E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8B42AE431D0B7260008D7A29 /* CoverFlowPicker */;
-			targetProxy = 8BFB45DD1D0E8146000F5A61 /* PBXContainerItemProxy */;
+			targetProxy = 8BB1D4B21E6509D900FD375E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -276,24 +278,28 @@
 		8B25811F1D0B7350001BB9F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.efremidze.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		8B2581201D0B7350001BB9F7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.efremidze.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -403,6 +409,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -420,6 +427,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.efremidze.CoverFlowPicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

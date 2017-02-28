@@ -13,28 +13,29 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
-            let layout = CarouselFlowLayout()
-            layout.scrollDirection = .Horizontal
+            let layout = AnimatedCollectionViewLayout()
+            layout.animator = LinearCardAttributeAnimator()
+            layout.scrollDirection = .horizontal
             collectionView.collectionViewLayout = layout
-            collectionView.registerClass(Cell.self, forCellWithReuseIdentifier: String(Cell))
-            collectionView.backgroundColor = .clearColor()
+            collectionView.register(Cell.self, forCellWithReuseIdentifier: String(describing: Cell.self))
+            collectionView.backgroundColor = .clear
         }
     }
     
 //    let emoji: [String] = [😺, 😸, 😹, 😻, 😼, 😽, 🙀, 😿, 😾]
-    let emoji: [String] = (0x1F601...0x1F64F).map { String(UnicodeScalar($0)) }
+    let emoji: [String] = (0x1F601...0x1F64F).map { String(UnicodeScalar($0 as UInt32)!) }
     
 }
 
 extension ViewController: UICollectionViewDataSource {
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return emoji.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(String(Cell), forIndexPath: indexPath)
-        cell.backgroundColor = .clearColor()
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: Cell.self), for: indexPath)
+        cell.backgroundColor = .clear
         let layer = cell.layer as! CATextLayer
         layer.string = emoji[indexPath.item]
         layer.fontSize = 50
@@ -46,15 +47,15 @@ extension ViewController: UICollectionViewDataSource {
 
 extension ViewController: UICollectionViewDelegate {
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
     
 }
 
 class Cell: UICollectionViewCell {
     
-    override class func layerClass() -> AnyClass {
+    override class var layerClass : AnyClass {
         return CATextLayer.self
     }
     
