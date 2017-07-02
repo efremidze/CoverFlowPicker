@@ -38,7 +38,7 @@ extension ViewController: UICollectionViewDataSource {
         cell.backgroundColor = .clear
         let layer = cell.layer as! CATextLayer
         layer.string = emoji[indexPath.item]
-        layer.fontSize = 50
+        layer.fontSize = 100
         layer.alignmentMode = kCAAlignmentCenter
         return cell
     }

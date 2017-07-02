@@ -31,8 +31,8 @@ public struct LinearCardAttributeAnimator: LayoutAttributesAnimator {
         let scaleTransform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
         let transitionTransform = CGAffineTransform(translationX: transitionX, y: 0)
         
-        attributes.alpha = 1.0 - abs(position) + minAlpha
-        attributes.transform = transitionTransform.concatenating(scaleTransform)
+        attributes.contentView?.alpha = 1.0 - abs(position) + minAlpha
+        attributes.contentView?.transform = transitionTransform.concatenating(scaleTransform)
     }
 }
 
@@ -54,13 +54,31 @@ public class AnimatedCollectionViewLayout: UICollectionViewFlowLayout {
         return PagerCollectionViewLayoutAttributes.self
     }
     
-    override public func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        return true
-    }
+//    override open func prepare() {
+//        guard let collectionView = collectionView else { return super.prepare() }
+//        
+//        collectionView.decelerationRate = UIScrollViewDecelerationRateFast
+//    }
     
     public override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
 //        return super.layoutAttributesForElements(in: rect)?.map { transformLayoutAttributes($0) }
         return super.layoutAttributesForElements(in: rect)?.flatMap { $0.copy() as? UICollectionViewLayoutAttributes }.map { transformLayoutAttributes($0) }
+    }
+    
+    public override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        return true
+    }
+    
+    public override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+        guard let collectionView = collectionView else { return proposedContentOffset }
+        
+        let layoutAttributes = layoutAttributesForElements(in: collectionView.bounds)!
+        let half = collectionView.frame.width / 2
+        let center = proposedContentOffset.x + half
+        
+        var targetContentOffset = proposedContentOffset
+        targetContentOffset.x = floor(layoutAttributes.sorted { abs($0.center.x - center) < abs($1.center.x - center) }.first!.center.x - half)
+        return targetContentOffset
     }
     
     private func transformLayoutAttributes(_ attributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
